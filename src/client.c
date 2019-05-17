@@ -102,7 +102,7 @@ int send_request(int fd, char *hostname, char *port, char *path)
 {
   const int max_request_size = 16384; //buffer size
   char request[max_request_size];
-  int rv; // response length??
+  int rv;
 
   int request_length = snprintf(request, max_request_size,
                                 "GET /%s HTTP/1.1\n"
