@@ -28,26 +28,61 @@ typedef struct urlinfo_t {
 urlinfo_t *parse_url(char *url)
 {
   // copy the input URL so as not to mutate the original
-  char *hostname = strdup(url);
+  char *hostname;
   char *port;
   char *path;
 
   urlinfo_t *urlinfo = malloc(sizeof(urlinfo_t));
 
-  /*
-    We can parse the input URL by doing the following:
+  // We can parse the input URL by doing the following:
 
-    1. Use strchr to find the first slash in the URL (this is assuming there is no http:// or https:// in the URL).
-    2. Set the path pointer to 1 character after the spot returned by strchr.
-    3. Overwrite the slash with a '\0' so that we are no longer considering anything after the slash.
-    4. Use strchr to find the first colon in the URL.
-    5. Set the port pointer to 1 character after the spot returned by strchr.
-    6. Overwrite the colon with a '\0' so that we are just left with the hostname.
-  */
+  // 1. Use strchr to find the first backslash in the URL (this is assuming there is no http:// or https:// in the URL).
 
-  ///////////////////
-  // IMPLEMENT ME! //
-  ///////////////////
+  // check if no http:// or https:// are in the url
+  if (strstr(url, "http:/"))
+  {
+    // the last / is the 7th char
+    hostname = strdup(url + 7);
+  }
+  else if (strstr(url, "https://"))
+  {
+    // the last / is the 8th char
+    hostname = strdup(url + 8);
+  }
+  else
+  {
+    // this means that there is the prefix so have at it bro
+    hostname = strdup(url);
+  }
+
+  // 2. Set the path pointer to 1 character after the spot returned by strchr.
+  if (strchr(hostname, '/'))
+  {
+    path = strchr(hostname, '/') + 1;
+    // 3. Overwrite the backslash with a "\0" so that we are no longer considering anything after the backslash.
+    *(port - 1) = '\0';
+  }
+  else
+  {
+    path = "";
+  }
+
+  // 4. Use strchr to find the first colon in the URL.
+  if (strchr(hostname, ':'))
+  {
+    // 5. Set the port pointer to 1 character after the spot returned by strchr.
+    port = strchr(hostname, ':') + 1;
+    // 6. Overwrite the colon with a "\0" so that we are just left with the hostname.
+    *(port - 1) = '\0';
+  }
+  else
+  {
+    port = "80";
+  }
+
+  urlinfo->path = path;
+  urlinfo->port = port;
+  urlinfo->hostname = hostname;
 
   return urlinfo;
 }
