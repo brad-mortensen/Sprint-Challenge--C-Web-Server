@@ -12,7 +12,8 @@
 /**
  * Struct to hold all three pieces of a URL
  */
-typedef struct urlinfo_t {
+typedef struct urlinfo_t
+{
   char *hostname;
   char *port;
   char *path;
@@ -99,24 +100,36 @@ urlinfo_t *parse_url(char *url)
 */
 int send_request(int fd, char *hostname, char *port, char *path)
 {
-  const int max_request_size = 16384;
+  const int max_request_size = 16384; //buffer size
   char request[max_request_size];
-  int rv;
+  int rv; // response length??
 
-  ///////////////////
-  // IMPLEMENT ME! //
-  ///////////////////
+  int request_length = snprintf(request, max_request_size,
+                                "GET /%s HTTP/1.1\n"
+                                "Host: %s:%s\n"
+                                "Connection: close\n"
+                                "\n",
+                                path, hostname, port);
 
-  return 0;
+  rv = send(fd, request, request_length, 0);
+
+  if (rv < 0)
+  {
+    perror("error");
+    exit(2);
+  }
+
+  return rv;
 }
 
 int main(int argc, char *argv[])
-{  
-  int sockfd, numbytes;  
+{
+  int sockfd, numbytes;
   char buf[BUFSIZE];
 
-  if (argc != 2) {
-    fprintf(stderr,"usage: client HOSTNAME:PORT/PATH\n");
+  if (argc != 2)
+  {
+    fprintf(stderr, "usage: client HOSTNAME:PORT/PATH\n");
     exit(1);
   }
 
