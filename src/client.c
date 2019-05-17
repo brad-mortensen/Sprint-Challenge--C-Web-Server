@@ -149,7 +149,17 @@ int main(int argc, char *argv[])
   {
     printf("%s\n", buf);
   }
+  // cleanup
+  close(sockfd);
 
-  // close fd and free mem
+  urlinfo->port = NULL;
+  urlinfo->hostname = NULL;
+  urlinfo->path = NULL;
+
+  free(urlinfo->port);
+  free(urlinfo->hostname);
+  free(urlinfo->path);
+  free(urlinfo);
+
   return 0;
 }
