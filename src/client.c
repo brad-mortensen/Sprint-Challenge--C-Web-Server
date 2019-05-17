@@ -132,11 +132,6 @@ int main(int argc, char *argv[])
     fprintf(stderr, "usage: client HOSTNAME:PORT/PATH\n");
     exit(1);
   }
-
-  /*
-    5. Clean up any allocated memory and open file descriptors.
-  */
-
   urlinfo_t *urlinfo = malloc(sizeof(urlinfo_t));
   // 1. Parse the input URL
   urlinfo = parse_url(argv[1]);
